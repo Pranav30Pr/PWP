@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🐍 MSBTE Python Practical 2026 | Slips Solved</title>
+    <!-- Fonts + identical color scheme to copy-wine.vercel.app (dark mode with neon green accents) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0c10;
+            font-family: 'Inter', sans-serif;
+            color: #ecedee;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+        }
+
+        /* main container */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* header style - exactly like copy-wine (dark, green highlight) */
+        .header {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid #2a2f3a;
+            padding-bottom: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .title-section h1 {
+            font-size: 2.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #8bc34a);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.2rem;
+        }
+
+        .developer-credit {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #8bc34a;
+            background: #1a1e26;
+            display: inline-block;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            margin-top: 0.3rem;
+            border: 1px solid #2f3542;
+            letter-spacing: -0.2px;
+        }
+
+        .title-section p {
+            color: #8e9aaf;
+            font-weight: 500;
+            margin-top: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .stats-badge {
+            background: #1e232c;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #b9ff66;
+            border: 1px solid #2a2f3a;
+            letter-spacing: -0.2px;
+        }
+
+        /* toolbar + search (dark mode) */
+        .toolbar {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 340px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1.2rem;
+            border-radius: 60px;
+            border: 1px solid #2a2f3a;
+            background: #111317;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: #ecedee;
+            transition: 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #8bc34a;
+            box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.2);
+        }
+
+        .search-box input::placeholder {
+            color: #5f6c84;
+        }
+
+        /* tag filter pills */
+        .slip-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            align-items: center;
+        }
+
+        .tag {
+            background: #1a1e26;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #b9c3db;
+            border: 1px solid #2a2f3a;
+        }
+
+        .tag.active {
+            background: #8bc34a;
+            color: #0a0c10;
+            border-color: #8bc34a;
+            font-weight: 600;
+        }
+
+        .tag:hover:not(.active) {
+            background: #252b36;
+            color: #ecedee;
+        }
+
+        /* slips grid (cards) */
+        .slips-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        /* card component - copy-wine style dark with neon borders on hover */
+        .slip-card {
+            background: #111317;
+            border-radius: 28px;
+            border: 1px solid #252b36;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .slip-card:hover {
+            border-color: #8bc34a;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.8rem;
+            background: #0f1117;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .card-header:hover {
+            background: #151a24;
+        }
+
+        .slip-number {
+            font-weight: 800;
+            font-size: 1.2rem;
+            background: #1e232c;
+            width: 46px;
+            height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            color: #8bc34a;
+            margin-right: 1rem;
+            border: 1px solid #2f3542;
+        }
+
+        .slip-title-main {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #f0f3f8;
+            letter-spacing: -0.2px;
+        }
+
+        .badge-pill {
+            background: #1a1f29;
+            border-radius: 40px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #b9c3db;
+            margin-left: 0.8rem;
+        }
+
+        .chevron {
+            font-size: 1.3rem;
+            color: #6b7a8f;
+            transition: transform 0.25s;
+        }
+
+        .card-body {
+            padding: 0 1.8rem 1.8rem 1.8rem;
+            display: none;
+            border-top: 1px solid #252b36;
+            background: #0f1117;
+        }
+
+        .slip-card.open .card-body {
+            display: block;
+        }
+
+        .slip-card.open .chevron {
+            transform: rotate(180deg);
+            color: #8bc34a;
+        }
+
+        /* task headers */
+        .task-head {
+            font-size: 0.95rem;
+            font-weight: 700;
+            background: #1a1f29;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            margin: 1.2rem 0 0.8rem 0;
+            color: #c3e88d;
+            letter-spacing: -0.2px;
+            border: 1px solid #2f3542;
+        }
+
+        .desc-text {
+            color: #b9c3db;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        /* code blocks with copy button (dark, neon green accents) */
+        pre {
+            background: #090b0f;
+            color: #e2e8f0;
+            padding: 1rem 1.2rem;
+            border-radius: 20px;
+            overflow-x: auto;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            margin: 0.9rem 0;
+            position: relative;
+            border: 1px solid #2a2f3a;
+        }
+
+        .code-wrapper {
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.6rem;
+            right: 0.8rem;
+            background: #252b36;
+            border: none;
+            color: #c3e88d;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.25rem 0.8rem;
+            border-radius: 30px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: 0.2s;
+            font-family: monospace;
+            z-index: 2;
+        }
+
+        .copy-btn:hover {
+            opacity: 1;
+            background: #8bc34a;
+            color: #0a0c10;
+        }
+
+        .output-box {
+            background: #090b10;
+            border-left: 4px solid #8bc34a;
+            padding: 0.8rem 1.2rem;
+            border-radius: 16px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            margin: 0.8rem 0;
+            white-space: pre-wrap;
+            color: #ccd6f0;
+            border: 1px solid #252b36;
+        }
+
+        .viva-list {
+            background: #11151e;
+            padding: 0.8rem 1.2rem;
+            border-radius: 20px;
+            margin: 1rem 0 0.5rem;
+            border-left: 3px solid #8bc34a;
+            font-size: 0.85rem;
+            color: #b9c7db;
+        }
+
+        .viva-list strong {
+            color: #d6e8a0;
+        }
+
+        .viva-list ul {
+            padding-left: 1.2rem;
+            margin-top: 0.3rem;
+        }
+
+        hr {
+            margin: 1rem 0;
+            border-color: #252b36;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.8rem;
+            color: #5f6c84;
+            border-top: 1px solid #1e232c;
+            padding-top: 1.5rem;
+        }
+
+        .no-result {
+            text-align: center;
+            padding: 3rem;
+            background: #111317;
+            border-radius: 32px;
+            color: #8e9aaf;
+            border: 1px solid #252b36;
+        }
+
+        @media (max-width: 750px) {
+            body { padding: 1rem; }
+            .card-header { padding: 0.8rem 1rem; }
+            .slip-title-main { font-size: 0.95rem; }
+            .badge-pill { display: none; }
+        }
+
+        code {
+            font-family: monospace;
+            background: #1a1f2a;
+            padding: 0.2rem 0.4rem;
+            border-radius: 8px;
+            color: #c3e88d;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="title-section">
+            <h1>🐍 Python Practicals 2026 MSBTE <span style="font-size: 1.1rem; background: #8bc34a20; padding: 0.1rem 0.6rem; border-radius: 40px;">PR STUDIOS</span></h1>
+            <div class="developer-credit">🎧 AISH KARAA PORANOO</div>
+            <p>All 28 slips • Expand, copy, and master — dark mode + neon style</p>
+        </div>
+        <div class="stats-badge">📘 28 Solved Programs</div>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search slips (constructor, pandas, tuple...)" autocomplete="off">
+        </div>
+        <div class="slip-tags" id="tagFilter">
+            <span class="tag active" data-tag="all">All</span>
+            <span class="tag" data-tag="OOP">OOP</span>
+            <span class="tag" data-tag="GUI">GUI/Tkinter</span>
+            <span class="tag" data-tag="Data">Data Struct</span>
+            <span class="tag" data-tag="Pandas">Pandas/DF</span>
+            <span class="tag" data-tag="Inheritance">Inheritance</span>
+        </div>
+    </div>
+
+    <div id="slipsContainer" class="slips-grid">
+        <!-- dynamic content -->
+    </div>
+    <footer>⚡ MSBTE Python Slips 2026 — All answers with code, output & viva. Inspired by copy-wine style.</footer>
+</div>
+
+<script>
+    // ----------------------------- FULL SLIPS DATA (28 slips based on original PDF, dark mode ready)
+    const slipsData = [
+        { id:1, title:"List Characteristics & Parameterized Constructor", tags:["OOP","Data"], content: `
+            <div><span class="task-head">📌 Task 1 - List Characteristics</span><div class="desc-text">Ordered | Mutable | Duplicates allowed | Heterogeneous | Dynamic size.<br>Example: <code>list1 = [10, "Python", 3.5]</code></div></div>
+            <div><span class="task-head">🔧 Task 2 - Parameterized Constructor</span><div class="code-wrapper"><pre><code>class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    def display(self):
+        print("Name:", self.name)
+        print("Age:", self.age)
+
+s1 = Student("Rahul", 18)
+s1.display()</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Output:<br>Name: Rahul<br>Age: 18</div></div>
+            <div class="viva-list"><strong>💡 Viva Questions:</strong><ul><li>What is a constructor? → Special method to initialize objects.</li><li>Parameterized constructor? → Accepts arguments during object creation.</li><li>What is self? → Represents current instance.</li></ul></div>
+        `},
+        { id:2, title:"Types of Inheritance & Diamond Pattern", tags:["Inheritance","OOP"], content: `
+            <div><span class="task-head">📌 Task 1 - Inheritance Types</span><div class="desc-text">Single, Multiple, Multilevel, Hierarchical inheritance.</div><div class="code-wrapper"><pre><code># Multiple inheritance example
+class Father: pass
+class Mother: pass
+class Child(Father, Mother): pass</code><button class="copy-btn">📋 Copy</button></pre></div></div>
+            <div><span class="task-head">✨ Task 2 - Diamond Pattern</span><div class="code-wrapper"><pre><code>for i in range(1,4):
+    print(" " * (3 - i) + "*" * (2*i - 1))
+for i in range(2,0,-1):
+    print(" " * (3 - i) + "*" * (2*i - 1))</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Output:<br>  *<br> ***<br>*****<br> ***<br>  *</div></div>
+            <div class="viva-list"><ul><li>Inheritance? Acquiring properties of another class.</li><li>Nested loops for patterns control rows & columns.</li></ul></div>
+        `},
+        { id:3, title:"Loop Controls & Calculator Class", tags:["OOP"], content: `<div><span class="task-head">🔄 Task 1 - break, continue, pass</span><div class="code-wrapper"><pre><code>for i in range(5):
+    if i == 2: continue
+    print(i)  # 0 1 3 4</code><button class="copy-btn">📋 Copy</button></pre></div></div><div><span class="task-head">🧮 Task 2 - Calculator using Class</span><div class="code-wrapper"><pre><code>class Calculator:
+    def add(self,a,b): print("Addition:",a+b)
+    def sub(self,a,b): print("Subtraction:",a-b)
+    def mul(self,a,b): print("Multiplication:",a*b)
+    def div(self,a,b): print("Division:",a/b)
+c = Calculator()
+c.add(10,5); c.sub(10,5); c.mul(10,5); c.div(10,5)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Addition:15 Subtraction:5 Multiplication:50 Division:2.0</div></div><div class="viva-list"><ul><li>Class = blueprint for objects. Method = function inside class.</li></ul></div>` },
+        { id:4, title:"Bitwise Operators & Tkinter Registration", tags:["GUI"], content: `<div><span class="task-head">⚙️ Bitwise: AND, OR, XOR, NOT, Shift</span><div class="code-wrapper"><pre><code>a=5; b=3; print(a & b)  # 1</code><button class="copy-btn">📋 Copy</button></pre></div></div><div><span class="task-head">🪟 Tkinter Registration GUI</span><div class="code-wrapper"><pre><code>from tkinter import *
+root = Tk()
+Label(root,text="Name").grid(row=0,column=0)
+Entry(root).grid(row=0,column=1)
+Button(root,text="Register").grid(row=3,column=1)
+root.mainloop()</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">GUI window with fields & register button appears.</div></div><div class="viva-list"><ul><li>Tkinter → Python GUI library. mainloop() keeps window running.</li></ul></div>` },
+        { id:5, title:"range() types & Swapping variables", tags:["Data"], content: `<div><span class="task-head">🎯 range(stop), range(start,stop), range(start,stop,step)</span><div class="code-wrapper"><pre><code>for i in range(1,5): print(i)  # 1 2 3 4</code><button class="copy-btn">📋 Copy</button></pre></div></div><div><span class="task-head">🔄 Swap two numbers</span><div class="code-wrapper"><pre><code>a,b = 5,10
+a,b = b,a
+print("Swapped:",a,b)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Before: a=5 b=10 → After: a=10 b=5</div></div>` },
+        { id:6, title:"Set vs Dictionary & Pandas DataFrame", tags:["Data","Pandas"], content: `<div><span class="task-head">📊 Set {1,2,3} (unique) vs Dict {key:value}</span></div><div><span class="task-head">🐼 DataFrame</span><div class="code-wrapper"><pre><code>import pandas as pd
+data = {"Name":["Rahul","Amit"], "Class":["SYCO","SYCO"], "Age":[18,19]}
+df = pd.DataFrame(data)
+print(df)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">   Name Class  Age<br>0 Rahul  SYCO   18<br>1  Amit  SYCO   19</div></div>` },
+        { id:7, title:"Dictionary Characteristics & Bits Conversion", tags:["Data"], content: `<div class="desc-text">Key-value pairs, keys unique, mutable, heterogenous.</div><div class="code-wrapper"><pre><code>bits = int(input("Enter bits:"))
+MB = bits/(8*1024*1024)
+GB = bits/(8*1024*1024*1024)
+print("MB:",MB,"GB:",GB)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="viva-list"><ul><li>Dictionary: unordered collection of key-value pairs.</li></ul></div>` },
+        { id:8, title:"Functions & Method Overloading (Area)", tags:["OOP"], content: `<div class="code-wrapper"><pre><code>class Area:
+    def area(self, a, b=None):
+        if b is None: print("Square:",a*a)
+        else: print("Rectangle:",a*b)
+obj = Area(); obj.area(5); obj.area(5,4)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Square: 25<br>Rectangle: 20</div>` },
+        { id:9, title:"Conditional Statements & Tkinter CheckButtons", tags:["GUI"], content: `<div class="code-wrapper"><pre><code>from tkinter import *
+root = Tk()
+Checkbutton(root,text="Option 1").pack()
+Checkbutton(root,text="Option 2").pack()
+root.mainloop()</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">if, if-else, if-elif-else ladder.</div>` },
+        { id:10, title:"List vs Tuple & Multiple Inheritance", tags:["Inheritance","Data"], content: `<div class="desc-text">List mutable [], Tuple immutable (). Multiple Inheritance: Child(Father, Mother)</div><div class="code-wrapper"><pre><code>class Father: def show1(self): print("Father")
+class Mother: def show2(self): print("Mother")
+class Child(Father, Mother): pass
+c = Child(); c.show1(); c.show2()</code><button class="copy-btn">📋 Copy</button></pre></div>` },
+        { id:11, title:"Dictionary keys/values/items & Leap Year", tags:["Data"], content: `<div class="code-wrapper"><pre><code>d = {'a':1,'b':2}
+print(d.keys(), d.values(), d.items())
+year = 2024
+if (year%4==0 and year%100!=0) or (year%400==0): print("Leap Year")</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">dict_keys(['a','b']) dict_values([1,2]) dict_items([('a',1),('b',2)])<br>Leap Year</div>` },
+        { id:12, title:"Python Features & Tkinter RadioButton", tags:["GUI"], content: `<div class="code-wrapper"><pre><code>from tkinter import *
+root = Tk()
+v = IntVar()
+Radiobutton(root,text="Opt1",variable=v,value=1).pack()
+root.mainloop()</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">Python: simple, interpreted, OOP, large library, platform independent.</div>` },
+        { id:13, title:"Set Characteristics & Grade Program", tags:["Data"], content: `<div class="code-wrapper"><pre><code>marks = [70,75,80,65,60]; avg = sum(marks)/5
+if avg>=75: grade='A'
+elif avg>=60: grade='B'
+elif avg>=50: grade='C'
+else: grade='Fail'
+print("Avg:",avg,"Grade:",grade)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Average: 70.0 Grade: B</div>` },
+        { id:14, title:"Membership Operators & Multilevel Inheritance", tags:["Inheritance"], content: `<div class="code-wrapper"><pre><code>class Grandfather: pass
+class Father(Grandfather): pass
+class Child(Father): pass</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">'in' checks existence, multilevel: child derives from derived class.</div>` },
+        { id:15, title:"Relational/Logical Operators & Sum of digits", tags:["Data"], content: `<div class="code-wrapper"><pre><code>num = 1234; s = 0
+while num>0: s += num%10; num//=10
+print("Sum:",s)  # 10</code><button class="copy-btn">📋 Copy</button></pre></div>` },
+        { id:16, title:"While/For Syntax & Set Operations", tags:["Data"], content: `<div class="code-wrapper"><pre><code># while to for: for x in range(1,10): print(x)
+set1={1,2,3,4}; set2={3,4,5,6}
+print("Union:", set1|set2, "Intersection:", set1&set2, "Diff:", set1-set2)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Union: {1,2,3,4,5,6} Intersection: {3,4} Difference: {1,2}</div>` },
+        { id:17, title:"List Methods & Pattern 1010101", tags:["Data"], content: `<div class="code-wrapper"><pre><code>list1=[1,2]; list1.append(3); list1.insert(1,5)
+# pattern 
+for i in range(7,0,-2): print(" "*(7-i) + "10"*(i//2) + "1")</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">1010101<br> 10101<br>   101<br>     1</div>` },
+        { id:18, title:"Identity Operators & Pandas Series", tags:["Pandas"], content: `<div class="code-wrapper"><pre><code>import pandas as pd
+s = pd.Series([10,20,30,40])
+print(s)</code><button class="copy-btn">📋 Copy</button></pre></div>` },
+        { id:19, title:"insert() vs extend() & Positive/Negative/Zero", tags:["Data"], content: `<div class="code-wrapper"><pre><code>nums = [1,2,3]
+nums.insert(1,10)   # [1,10,2,3]
+nums.extend([4,5])  # [1,10,2,3,4,5]
+num = -5; print("Negative" if num<0 else "Positive" if num>0 else "Zero")</code><button class="copy-btn">📋 Copy</button></pre></div>` },
+        { id:20, title:"List Slicing & Update/Delete Operations", tags:["Data"], content: `<div class="code-wrapper"><pre><code>lst = [10,20,30,40,50]
+print(lst[1:4])    # [20,30,40]
+lst.append(60); lst.insert(2,25); lst.remove(30); del lst[1]</code><button class="copy-btn">📋 Copy</button></pre></div>` },
+        { id:21, title:"Series vs DataFrame & Common items in lists", tags:["Pandas","Data"], content: `<div class="code-wrapper"><pre><code>list1=[1,2,3,4,5]; list2=[3,4,5,6,7]
+common = [i for i in list1 if i in list2]
+print("Common:", common)   # [3,4,5]</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">Series: 1D labeled, DataFrame: 2D tabular.</div>` },
+        { id:22, title:"pip & PEP 8 + Dictionary add/update", tags:["Data"], content: `<div class="code-wrapper"><pre><code>student = {"name":"Rahul","age":18}
+student["marks"] = 85
+student["age"] = 19
+print(student)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">pip install package; PEP 8 = Python style guide.</div>` },
+        { id:23, title:"Random Module Functions & Reverse Number", tags:["Data"], content: `<div class="code-wrapper"><pre><code>import random
+print(random.randint(1,10))
+num = 1234; rev = 0
+while num>0: rev = rev*10 + num%10; num//=10
+print("Reversed:", rev)  # 4321</code><button class="copy-btn">📋 Copy</button></pre></div>` },
+        { id:24, title:"Function Arguments & Min/Max in Tuple", tags:["Data"], content: `<div class="code-wrapper"><pre><code>def add(a,b=10): print(a+b)  # default
+def total(*args): print(sum(args))
+tup = (10,45,3,89,25,100)
+print("Min:", min(tup), "Max:", max(tup))</code><button class="copy-btn">📋 Copy</button></pre></div>` },
+        { id:25, title:"Tuple Characteristics & Palindrome", tags:["Data"], content: `<div class="code-wrapper"><pre><code>num = 121; temp = num; rev = 0
+while num>0: rev = rev*10 + num%10; num//=10
+print("Palindrome" if temp==rev else "Not")</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">Tuple: immutable, ordered, duplicates allowed.</div>` },
+        { id:26, title:"Purpose of self & Repeated elements in Tuple", tags:["OOP"], content: `<div class="code-wrapper"><pre><code>t = (1,2,3,4,2,5,3,6)
+repeated = [x for x in set(t) if t.count(x) > 1]
+print("Repeated:", repeated)  # [2,3]</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">self refers to current object, needed to access instance variables.</div>` },
+        { id:27, title:"Method Overloading vs Overriding & Fibonacci", tags:["OOP"], content: `<div class="code-wrapper"><pre><code># fib.py module
+def fibonacci():
+    a,b=0,1
+    for _ in range(10): print(a,end=" "); a,b=b,a+b
+# main: import fib; fib.fibonacci()</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">0 1 1 2 3 5 8 13 21 34</div><div class="desc-text">Overloading: same name diff params, Overriding: child redefines parent method.</div>` },
+        { id:28, title:"Python Applications & Simple Package", tags:["OOP"], content: `<div class="code-wrapper"><pre><code># mypackage/calc.py
+def add(a,b): print("Addition:",a+b)
+# main: from mypackage import calc; calc.add(5,3)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">Web dev, Data Science, Automation, GUI, Game dev. Package = collection of modules.</div><div class="viva-list"><ul><li>Package vs Module: module = single file, package = directory with modules.</li></ul></div>` }
+    ];
+
+    // rendering + filtering logic
+    function renderSlips(filterText = "", tag = "all") {
+        const container = document.getElementById('slipsContainer');
+        let filtered = slipsData.filter(slip => {
+            const matchTag = (tag === "all") || slip.tags.includes(tag);
+            const matchText = slip.title.toLowerCase().includes(filterText) || slip.content.toLowerCase().includes(filterText);
+            return matchTag && matchText;
+        });
+        if (filtered.length === 0) {
+            container.innerHTML = `<div class="no-result">✨ No matching slips found. Try another keyword or tag.</div>`;
+            return;
+        }
+        container.innerHTML = filtered.map(slip => `
+            <div class="slip-card" data-id="${slip.id}">
+                <div class="card-header">
+                    <div style="display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;">
+                        <span class="slip-number">#${slip.id}</span>
+                        <span class="slip-title-main">${escapeHtml(slip.title)}</span>
+                        <span class="badge-pill">${slip.tags.join(", ")}</span>
+                    </div>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-body">
+                    ${slip.content}
+                </div>
+            </div>
+        `).join('');
+        attachCopyEvents();
+        attachToggleEvents();
+    }
+
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;});}
+
+    function attachCopyEvents() {
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.removeEventListener('click', copyHandler);
+            btn.addEventListener('click', copyHandler);
+        });
+    }
+    function copyHandler(e) {
+        e.stopPropagation();
+        const pre = this.closest('pre');
+        if(pre) {
+            const codeElem = pre.querySelector('code');
+            let codeText = codeElem ? codeElem.innerText : pre.innerText.replace('📋 Copy', '').trim();
+            navigator.clipboard.writeText(codeText);
+            const original = this.innerText;
+            this.innerText = '✓ Copied!';
+            setTimeout(() => this.innerText = original, 1200);
+        }
+    }
+    function attachToggleEvents() {
+        document.querySelectorAll('.slip-card .card-header').forEach(header => {
+            header.removeEventListener('click', toggleHandler);
+            header.addEventListener('click', toggleHandler);
+        });
+    }
+    function toggleHandler(e) {
+        const card = this.closest('.slip-card');
+        if(card) card.classList.toggle('open');
+    }
+
+    // filter & search
+    const searchInput = document.getElementById('searchInput');
+    const tagButtons = document.querySelectorAll('#tagFilter .tag');
+    let currentTag = "all";
+    tagButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tagButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentTag = btn.getAttribute('data-tag');
+            renderSlips(searchInput.value.toLowerCase(), currentTag);
+        });
+    });
+    searchInput.addEventListener('input', (e) => {
+        renderSlips(e.target.value.toLowerCase(), currentTag);
+    });
+    renderSlips("", "all");
+</script>
+</body>
+</html>
