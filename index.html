@@ -1,608 +1,797 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🐍 MSBTE Python Practical 2026 | Slips Solved</title>
-    <!-- Fonts + identical color scheme to copy-wine.vercel.app (dark mode with neon green accents) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #0a0c10;
-            font-family: 'Inter', sans-serif;
-            color: #ecedee;
-            line-height: 1.5;
-            padding: 2rem 1.5rem;
-        }
-
-        /* main container */
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-
-        /* header style - exactly like copy-wine (dark, green highlight) */
-        .header {
-            margin-bottom: 2.5rem;
-            border-bottom: 1px solid #2a2f3a;
-            padding-bottom: 1.2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .title-section h1 {
-            font-size: 2.3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #8bc34a);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .title-section p {
-            color: #8e9aaf;
-            font-weight: 500;
-            margin-top: 0.3rem;
-            font-size: 0.9rem;
-        }
-
-        .stats-badge {
-            background: #1e232c;
-            padding: 0.5rem 1.2rem;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #b9ff66;
-            border: 1px solid #2a2f3a;
-            letter-spacing: -0.2px;
-        }
-
-        /* toolbar + search (dark mode) */
-        .toolbar {
-            margin-bottom: 2rem;
-            display: flex;
-            gap: 1.2rem;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .search-box {
-            flex: 1;
-            max-width: 340px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 0.75rem 1.2rem;
-            border-radius: 60px;
-            border: 1px solid #2a2f3a;
-            background: #111317;
-            font-family: inherit;
-            font-size: 0.9rem;
-            color: #ecedee;
-            transition: 0.2s;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: #8bc34a;
-            box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.2);
-        }
-
-        .search-box input::placeholder {
-            color: #5f6c84;
-        }
-
-        /* tag filter pills */
-        .slip-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.7rem;
-            align-items: center;
-        }
-
-        .tag {
-            background: #1a1e26;
-            padding: 0.4rem 1rem;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #b9c3db;
-            border: 1px solid #2a2f3a;
-        }
-
-        .tag.active {
-            background: #8bc34a;
-            color: #0a0c10;
-            border-color: #8bc34a;
-            font-weight: 600;
-        }
-
-        .tag:hover:not(.active) {
-            background: #252b36;
-            color: #ecedee;
-        }
-
-        /* slips grid (cards) */
-        .slips-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        /* card component - copy-wine style dark with neon borders on hover */
-        .slip-card {
-            background: #111317;
-            border-radius: 28px;
-            border: 1px solid #252b36;
-            overflow: hidden;
-            transition: all 0.2s ease;
-        }
-
-        .slip-card:hover {
-            border-color: #8bc34a;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.8rem;
-            background: #0f1117;
-            cursor: pointer;
-            transition: background 0.1s;
-        }
-
-        .card-header:hover {
-            background: #151a24;
-        }
-
-        .slip-number {
-            font-weight: 800;
-            font-size: 1.2rem;
-            background: #1e232c;
-            width: 46px;
-            height: 46px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 30px;
-            color: #8bc34a;
-            margin-right: 1rem;
-            border: 1px solid #2f3542;
-        }
-
-        .slip-title-main {
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: #f0f3f8;
-            letter-spacing: -0.2px;
-        }
-
-        .badge-pill {
-            background: #1a1f29;
-            border-radius: 40px;
-            padding: 0.2rem 0.8rem;
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: #b9c3db;
-            margin-left: 0.8rem;
-        }
-
-        .chevron {
-            font-size: 1.3rem;
-            color: #6b7a8f;
-            transition: transform 0.25s;
-        }
-
-        .card-body {
-            padding: 0 1.8rem 1.8rem 1.8rem;
-            display: none;
-            border-top: 1px solid #252b36;
-            background: #0f1117;
-        }
-
-        .slip-card.open .card-body {
-            display: block;
-        }
-
-        .slip-card.open .chevron {
-            transform: rotate(180deg);
-            color: #8bc34a;
-        }
-
-        /* task headers */
-        .task-head {
-            font-size: 0.95rem;
-            font-weight: 700;
-            background: #1a1f29;
-            display: inline-block;
-            padding: 0.2rem 1.2rem;
-            border-radius: 30px;
-            margin: 1.2rem 0 0.8rem 0;
-            color: #c3e88d;
-            letter-spacing: -0.2px;
-            border: 1px solid #2f3542;
-        }
-
-        .desc-text {
-            color: #b9c3db;
-            margin: 0.5rem 0;
-            font-size: 0.9rem;
-        }
-
-        /* code blocks with copy button (dark, neon green accents) */
-        pre {
-            background: #090b0f;
-            color: #e2e8f0;
-            padding: 1rem 1.2rem;
-            border-radius: 20px;
-            overflow-x: auto;
-            font-size: 0.8rem;
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-            margin: 0.9rem 0;
-            position: relative;
-            border: 1px solid #2a2f3a;
-        }
-
-        .code-wrapper {
-            position: relative;
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: 0.6rem;
-            right: 0.8rem;
-            background: #252b36;
-            border: none;
-            color: #c3e88d;
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 0.25rem 0.8rem;
-            border-radius: 30px;
-            cursor: pointer;
-            opacity: 0.8;
-            transition: 0.2s;
-            font-family: monospace;
-            z-index: 2;
-        }
-
-        .copy-btn:hover {
-            opacity: 1;
-            background: #8bc34a;
-            color: #0a0c10;
-        }
-
-        .output-box {
-            background: #090b10;
-            border-left: 4px solid #8bc34a;
-            padding: 0.8rem 1.2rem;
-            border-radius: 16px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            margin: 0.8rem 0;
-            white-space: pre-wrap;
-            color: #ccd6f0;
-            border: 1px solid #252b36;
-        }
-
-        .viva-list {
-            background: #11151e;
-            padding: 0.8rem 1.2rem;
-            border-radius: 20px;
-            margin: 1rem 0 0.5rem;
-            border-left: 3px solid #8bc34a;
-            font-size: 0.85rem;
-            color: #b9c7db;
-        }
-
-        .viva-list strong {
-            color: #d6e8a0;
-        }
-
-        .viva-list ul {
-            padding-left: 1.2rem;
-            margin-top: 0.3rem;
-        }
-
-        hr {
-            margin: 1rem 0;
-            border-color: #252b36;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 3rem;
-            font-size: 0.8rem;
-            color: #5f6c84;
-            border-top: 1px solid #1e232c;
-            padding-top: 1.5rem;
-        }
-
-        .no-result {
-            text-align: center;
-            padding: 3rem;
-            background: #111317;
-            border-radius: 32px;
-            color: #8e9aaf;
-            border: 1px solid #252b36;
-        }
-
-        @media (max-width: 750px) {
-            body { padding: 1rem; }
-            .card-header { padding: 0.8rem 1rem; }
-            .slip-title-main { font-size: 0.95rem; }
-            .badge-pill { display: none; }
-        }
-
-        code {
-            font-family: monospace;
-            background: #1a1f2a;
-            padding: 0.2rem 0.4rem;
-            border-radius: 8px;
-            color: #c3e88d;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PWP Practical Slips – Programming with Python (314004)</title>
+<style>
+  :root {
+    --bg: #f8f9fa; --surface: #ffffff; --surface2: #f1f3f5;
+    --border: #dee2e6; --text: #212529; --muted: #6c757d;
+    --accent: #5c6bc0; --accent-light: #e8eaf6; --green: #2e7d32;
+    --green-light: #e8f5e9; --code-bg: #1e1e2e; --code-text: #cdd6f4;
+    --tag-bg: #e3f2fd; --tag-text: #1565c0; --marks-bg: #fff3e0; --marks-text: #e65100;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; }
+  
+  header { background: var(--accent); color: white; padding: 1.5rem 2rem; text-align: center; }
+  header h1 { font-size: 1.4rem; font-weight: 600; }
+  header p { font-size: 0.85rem; opacity: 0.85; margin-top: 4px; }
+  
+  .controls { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.75rem 1.5rem; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; position: sticky; top: 0; z-index: 100; }
+  .controls input { flex: 1; min-width: 180px; padding: 7px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; background: var(--bg); color: var(--text); }
+  .controls input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  .slip-nav { display: flex; gap: 4px; flex-wrap: wrap; }
+  .slip-nav a { font-size: 12px; padding: 4px 8px; background: var(--accent-light); color: var(--accent); border-radius: 4px; text-decoration: none; font-weight: 500; }
+  .slip-nav a:hover { background: var(--accent); color: white; }
+  
+  .container { max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 1.5rem; }
+  
+  .slip { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .slip-header { background: var(--accent); color: white; padding: 0.75rem 1.25rem; display: flex; justify-content: space-between; align-items: center; }
+  .slip-header h2 { font-size: 1rem; font-weight: 600; }
+  .slip-header span { font-size: 12px; opacity: 0.8; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; }
+  
+  .task { padding: 1rem 1.25rem; border-top: 1px solid var(--border); }
+  .task:first-child { border-top: none; }
+  .task-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+  .task-label .tname { font-size: 13px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+  .task-label .marks { font-size: 12px; background: var(--marks-bg); color: var(--marks-text); padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+  .task-q { font-size: 14px; color: var(--muted); margin-bottom: 0.75rem; font-style: italic; }
+  
+  .theory { background: var(--green-light); border-left: 3px solid var(--green); padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; font-size: 14px; line-height: 1.7; }
+  .theory h4 { color: var(--green); font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .theory ul { padding-left: 1.2rem; }
+  .theory li { margin-bottom: 3px; }
+  .theory table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .theory th { background: #c8e6c9; padding: 5px 8px; text-align: left; }
+  .theory td { padding: 4px 8px; border-bottom: 1px solid #a5d6a7; }
+  
+  pre { background: var(--code-bg); color: var(--code-text); padding: 1rem; border-radius: 6px; font-size: 13px; line-height: 1.6; overflow-x: auto; font-family: 'Consolas', 'Courier New', monospace; }
+  .kw { color: #cba6f7; } .fn { color: #89b4fa; } .st { color: #a6e3a1; } .cm { color: #6c7086; font-style: italic; } .num { color: #fab387; }
+  
+  .oral { background: var(--surface2); padding: 0.75rem 1.25rem; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .oral::before { content: '🎤'; font-size: 14px; }
+  
+  @media (max-width: 600px) { .slip-nav { display: none; } }
+</style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <div class="title-section">
-            <h1>🐍 Python Practicals 2026 <span style="font-size: 0.9rem;">MSBTE</span></h1>
-            <p>All 28 slips • Expand, copy, and master — dark mode + neon style</p>
-        </div>
-        <div class="stats-badge">📘 28 Solved Programs</div>
-    </div>
 
-    <div class="toolbar">
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="🔍 Search slips (constructor, pandas, tuple...)" autocomplete="off">
-        </div>
-        <div class="slip-tags" id="tagFilter">
-            <span class="tag active" data-tag="all">All</span>
-            <span class="tag" data-tag="OOP">OOP</span>
-            <span class="tag" data-tag="GUI">GUI/Tkinter</span>
-            <span class="tag" data-tag="Data">Data Struct</span>
-            <span class="tag" data-tag="Pandas">Pandas/DF</span>
-            <span class="tag" data-tag="Inheritance">Inheritance</span>
-        </div>
-    </div>
+<header>
+  <h1>CO4K – Programming with Python (314004)</h1>
+  <p>Pimpri Chinchwad Polytechnic · Computer Dept · Academic Year 2025-26 (Even Sem) · 28 Practical Slips</p>
+</header>
 
-    <div id="slipsContainer" class="slips-grid">
-        <!-- dynamic content -->
-    </div>
-    <footer>⚡ MSBTE Python Slips 2026 — All answers with code, output & viva. Inspired by copy-wine style.</footer>
+<div class="controls">
+  <input type="text" id="search" placeholder="Search slips or topics...">
+  <div class="slip-nav" id="navLinks"></div>
 </div>
 
+<div class="container" id="slipsContainer"></div>
+
 <script>
-    // ----------------------------- FULL SLIPS DATA (28 slips based on original PDF, dark mode ready)
-    const slipsData = [
-        { id:1, title:"List Characteristics & Parameterized Constructor", tags:["OOP","Data"], content: `
-            <div><span class="task-head">📌 Task 1 - List Characteristics</span><div class="desc-text">Ordered | Mutable | Duplicates allowed | Heterogeneous | Dynamic size.<br>Example: <code>list1 = [10, "Python", 3.5]</code></div></div>
-            <div><span class="task-head">🔧 Task 2 - Parameterized Constructor</span><div class="code-wrapper"><pre><code>class Student:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-    def display(self):
-        print("Name:", self.name)
-        print("Age:", self.age)
+const slips = [
+{
+  n:1,
+  tasks:[
+    {q:"Explain characteristics of a List",marks:15,type:"theory",content:`<h4>Characteristics of a List</h4><ul>
+<li><b>Ordered:</b> Elements maintain insertion order.</li>
+<li><b>Mutable:</b> Elements can be changed after creation.</li>
+<li><b>Indexed:</b> Accessed by index starting at 0.</li>
+<li><b>Duplicates allowed:</b> Same value can appear multiple times.</li>
+<li><b>Heterogeneous:</b> Can store different data types (int, str, etc.).</li>
+<li><b>Dynamic size:</b> Grows/shrinks as elements are added/removed.</li>
+<li><b>Nested:</b> A list can contain other lists.</li>
+</ul>`},
+    {q:"Implement a parameterized constructor",marks:20,type:"code",content:`<span class="kw">class</span> <span class="fn">Student</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, name, roll, marks):
+        <span class="kw">self</span>.name = name
+        <span class="kw">self</span>.roll = roll
+        <span class="kw">self</span>.marks = marks
 
-s1 = Student("Rahul", 18)
-s1.display()</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Output:<br>Name: Rahul<br>Age: 18</div></div>
-            <div class="viva-list"><strong>💡 Viva Questions:</strong><ul><li>What is a constructor? → Special method to initialize objects.</li><li>Parameterized constructor? → Accepts arguments during object creation.</li><li>What is self? → Represents current instance.</li></ul></div>
-        `},
-        { id:2, title:"Types of Inheritance & Diamond Pattern", tags:["Inheritance","OOP"], content: `
-            <div><span class="task-head">📌 Task 1 - Inheritance Types</span><div class="desc-text">Single, Multiple, Multilevel, Hierarchical inheritance.</div><div class="code-wrapper"><pre><code># Multiple inheritance example
-class Father: pass
-class Mother: pass
-class Child(Father, Mother): pass</code><button class="copy-btn">📋 Copy</button></pre></div></div>
-            <div><span class="task-head">✨ Task 2 - Diamond Pattern</span><div class="code-wrapper"><pre><code>for i in range(1,4):
-    print(" " * (3 - i) + "*" * (2*i - 1))
-for i in range(2,0,-1):
-    print(" " * (3 - i) + "*" * (2*i - 1))</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Output:<br>  *<br> ***<br>*****<br> ***<br>  *</div></div>
-            <div class="viva-list"><ul><li>Inheritance? Acquiring properties of another class.</li><li>Nested loops for patterns control rows & columns.</li></ul></div>
-        `},
-        { id:3, title:"Loop Controls & Calculator Class", tags:["OOP"], content: `<div><span class="task-head">🔄 Task 1 - break, continue, pass</span><div class="code-wrapper"><pre><code>for i in range(5):
-    if i == 2: continue
-    print(i)  # 0 1 3 4</code><button class="copy-btn">📋 Copy</button></pre></div></div><div><span class="task-head">🧮 Task 2 - Calculator using Class</span><div class="code-wrapper"><pre><code>class Calculator:
-    def add(self,a,b): print("Addition:",a+b)
-    def sub(self,a,b): print("Subtraction:",a-b)
-    def mul(self,a,b): print("Multiplication:",a*b)
-    def div(self,a,b): print("Division:",a/b)
-c = Calculator()
-c.add(10,5); c.sub(10,5); c.mul(10,5); c.div(10,5)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Addition:15 Subtraction:5 Multiplication:50 Division:2.0</div></div><div class="viva-list"><ul><li>Class = blueprint for objects. Method = function inside class.</li></ul></div>` },
-        { id:4, title:"Bitwise Operators & Tkinter Registration", tags:["GUI"], content: `<div><span class="task-head">⚙️ Bitwise: AND, OR, XOR, NOT, Shift</span><div class="code-wrapper"><pre><code>a=5; b=3; print(a & b)  # 1</code><button class="copy-btn">📋 Copy</button></pre></div></div><div><span class="task-head">🪟 Tkinter Registration GUI</span><div class="code-wrapper"><pre><code>from tkinter import *
-root = Tk()
-Label(root,text="Name").grid(row=0,column=0)
-Entry(root).grid(row=0,column=1)
-Button(root,text="Register").grid(row=3,column=1)
-root.mainloop()</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">GUI window with fields & register button appears.</div></div><div class="viva-list"><ul><li>Tkinter → Python GUI library. mainloop() keeps window running.</li></ul></div>` },
-        { id:5, title:"range() types & Swapping variables", tags:["Data"], content: `<div><span class="task-head">🎯 range(stop), range(start,stop), range(start,stop,step)</span><div class="code-wrapper"><pre><code>for i in range(1,5): print(i)  # 1 2 3 4</code><button class="copy-btn">📋 Copy</button></pre></div></div><div><span class="task-head">🔄 Swap two numbers</span><div class="code-wrapper"><pre><code>a,b = 5,10
-a,b = b,a
-print("Swapped:",a,b)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Before: a=5 b=10 → After: a=10 b=5</div></div>` },
-        { id:6, title:"Set vs Dictionary & Pandas DataFrame", tags:["Data","Pandas"], content: `<div><span class="task-head">📊 Set {1,2,3} (unique) vs Dict {key:value}</span></div><div><span class="task-head">🐼 DataFrame</span><div class="code-wrapper"><pre><code>import pandas as pd
-data = {"Name":["Rahul","Amit"], "Class":["SYCO","SYCO"], "Age":[18,19]}
-df = pd.DataFrame(data)
-print(df)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">   Name Class  Age<br>0 Rahul  SYCO   18<br>1  Amit  SYCO   19</div></div>` },
-        { id:7, title:"Dictionary Characteristics & Bits Conversion", tags:["Data"], content: `<div class="desc-text">Key-value pairs, keys unique, mutable, heterogenous.</div><div class="code-wrapper"><pre><code>bits = int(input("Enter bits:"))
-MB = bits/(8*1024*1024)
-GB = bits/(8*1024*1024*1024)
-print("MB:",MB,"GB:",GB)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="viva-list"><ul><li>Dictionary: unordered collection of key-value pairs.</li></ul></div>` },
-        { id:8, title:"Functions & Method Overloading (Area)", tags:["OOP"], content: `<div class="code-wrapper"><pre><code>class Area:
-    def area(self, a, b=None):
-        if b is None: print("Square:",a*a)
-        else: print("Rectangle:",a*b)
-obj = Area(); obj.area(5); obj.area(5,4)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Square: 25<br>Rectangle: 20</div>` },
-        { id:9, title:"Conditional Statements & Tkinter CheckButtons", tags:["GUI"], content: `<div class="code-wrapper"><pre><code>from tkinter import *
-root = Tk()
-Checkbutton(root,text="Option 1").pack()
-Checkbutton(root,text="Option 2").pack()
-root.mainloop()</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">if, if-else, if-elif-else ladder.</div>` },
-        { id:10, title:"List vs Tuple & Multiple Inheritance", tags:["Inheritance","Data"], content: `<div class="desc-text">List mutable [], Tuple immutable (). Multiple Inheritance: Child(Father, Mother)</div><div class="code-wrapper"><pre><code>class Father: def show1(self): print("Father")
-class Mother: def show2(self): print("Mother")
-class Child(Father, Mother): pass
-c = Child(); c.show1(); c.show2()</code><button class="copy-btn">📋 Copy</button></pre></div>` },
-        { id:11, title:"Dictionary keys/values/items & Leap Year", tags:["Data"], content: `<div class="code-wrapper"><pre><code>d = {'a':1,'b':2}
-print(d.keys(), d.values(), d.items())
-year = 2024
-if (year%4==0 and year%100!=0) or (year%400==0): print("Leap Year")</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">dict_keys(['a','b']) dict_values([1,2]) dict_items([('a',1),('b',2)])<br>Leap Year</div>` },
-        { id:12, title:"Python Features & Tkinter RadioButton", tags:["GUI"], content: `<div class="code-wrapper"><pre><code>from tkinter import *
-root = Tk()
-v = IntVar()
-Radiobutton(root,text="Opt1",variable=v,value=1).pack()
-root.mainloop()</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">Python: simple, interpreted, OOP, large library, platform independent.</div>` },
-        { id:13, title:"Set Characteristics & Grade Program", tags:["Data"], content: `<div class="code-wrapper"><pre><code>marks = [70,75,80,65,60]; avg = sum(marks)/5
-if avg>=75: grade='A'
-elif avg>=60: grade='B'
-elif avg>=50: grade='C'
-else: grade='Fail'
-print("Avg:",avg,"Grade:",grade)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Average: 70.0 Grade: B</div>` },
-        { id:14, title:"Membership Operators & Multilevel Inheritance", tags:["Inheritance"], content: `<div class="code-wrapper"><pre><code>class Grandfather: pass
-class Father(Grandfather): pass
-class Child(Father): pass</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">'in' checks existence, multilevel: child derives from derived class.</div>` },
-        { id:15, title:"Relational/Logical Operators & Sum of digits", tags:["Data"], content: `<div class="code-wrapper"><pre><code>num = 1234; s = 0
-while num>0: s += num%10; num//=10
-print("Sum:",s)  # 10</code><button class="copy-btn">📋 Copy</button></pre></div>` },
-        { id:16, title:"While/For Syntax & Set Operations", tags:["Data"], content: `<div class="code-wrapper"><pre><code># while to for: for x in range(1,10): print(x)
-set1={1,2,3,4}; set2={3,4,5,6}
-print("Union:", set1|set2, "Intersection:", set1&set2, "Diff:", set1-set2)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">Union: {1,2,3,4,5,6} Intersection: {3,4} Difference: {1,2}</div>` },
-        { id:17, title:"List Methods & Pattern 1010101", tags:["Data"], content: `<div class="code-wrapper"><pre><code>list1=[1,2]; list1.append(3); list1.insert(1,5)
-# pattern 
-for i in range(7,0,-2): print(" "*(7-i) + "10"*(i//2) + "1")</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">1010101<br> 10101<br>   101<br>     1</div>` },
-        { id:18, title:"Identity Operators & Pandas Series", tags:["Pandas"], content: `<div class="code-wrapper"><pre><code>import pandas as pd
-s = pd.Series([10,20,30,40])
-print(s)</code><button class="copy-btn">📋 Copy</button></pre></div>` },
-        { id:19, title:"insert() vs extend() & Positive/Negative/Zero", tags:["Data"], content: `<div class="code-wrapper"><pre><code>nums = [1,2,3]
-nums.insert(1,10)   # [1,10,2,3]
-nums.extend([4,5])  # [1,10,2,3,4,5]
-num = -5; print("Negative" if num<0 else "Positive" if num>0 else "Zero")</code><button class="copy-btn">📋 Copy</button></pre></div>` },
-        { id:20, title:"List Slicing & Update/Delete Operations", tags:["Data"], content: `<div class="code-wrapper"><pre><code>lst = [10,20,30,40,50]
-print(lst[1:4])    # [20,30,40]
-lst.append(60); lst.insert(2,25); lst.remove(30); del lst[1]</code><button class="copy-btn">📋 Copy</button></pre></div>` },
-        { id:21, title:"Series vs DataFrame & Common items in lists", tags:["Pandas","Data"], content: `<div class="code-wrapper"><pre><code>list1=[1,2,3,4,5]; list2=[3,4,5,6,7]
-common = [i for i in list1 if i in list2]
-print("Common:", common)   # [3,4,5]</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">Series: 1D labeled, DataFrame: 2D tabular.</div>` },
-        { id:22, title:"pip & PEP 8 + Dictionary add/update", tags:["Data"], content: `<div class="code-wrapper"><pre><code>student = {"name":"Rahul","age":18}
-student["marks"] = 85
-student["age"] = 19
-print(student)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">pip install package; PEP 8 = Python style guide.</div>` },
-        { id:23, title:"Random Module Functions & Reverse Number", tags:["Data"], content: `<div class="code-wrapper"><pre><code>import random
-print(random.randint(1,10))
-num = 1234; rev = 0
-while num>0: rev = rev*10 + num%10; num//=10
-print("Reversed:", rev)  # 4321</code><button class="copy-btn">📋 Copy</button></pre></div>` },
-        { id:24, title:"Function Arguments & Min/Max in Tuple", tags:["Data"], content: `<div class="code-wrapper"><pre><code>def add(a,b=10): print(a+b)  # default
-def total(*args): print(sum(args))
-tup = (10,45,3,89,25,100)
-print("Min:", min(tup), "Max:", max(tup))</code><button class="copy-btn">📋 Copy</button></pre></div>` },
-        { id:25, title:"Tuple Characteristics & Palindrome", tags:["Data"], content: `<div class="code-wrapper"><pre><code>num = 121; temp = num; rev = 0
-while num>0: rev = rev*10 + num%10; num//=10
-print("Palindrome" if temp==rev else "Not")</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">Tuple: immutable, ordered, duplicates allowed.</div>` },
-        { id:26, title:"Purpose of self & Repeated elements in Tuple", tags:["OOP"], content: `<div class="code-wrapper"><pre><code>t = (1,2,3,4,2,5,3,6)
-repeated = [x for x in set(t) if t.count(x) > 1]
-print("Repeated:", repeated)  # [2,3]</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">self refers to current object, needed to access instance variables.</div>` },
-        { id:27, title:"Method Overloading vs Overriding & Fibonacci", tags:["OOP"], content: `<div class="code-wrapper"><pre><code># fib.py module
-def fibonacci():
-    a,b=0,1
-    for _ in range(10): print(a,end=" "); a,b=b,a+b
-# main: import fib; fib.fibonacci()</code><button class="copy-btn">📋 Copy</button></pre></div><div class="output-box">0 1 1 2 3 5 8 13 21 34</div><div class="desc-text">Overloading: same name diff params, Overriding: child redefines parent method.</div>` },
-        { id:28, title:"Python Applications & Simple Package", tags:["OOP"], content: `<div class="code-wrapper"><pre><code># mypackage/calc.py
-def add(a,b): print("Addition:",a+b)
-# main: from mypackage import calc; calc.add(5,3)</code><button class="copy-btn">📋 Copy</button></pre></div><div class="desc-text">Web dev, Data Science, Automation, GUI, Game dev. Package = collection of modules.</div><div class="viva-list"><ul><li>Package vs Module: module = single file, package = directory with modules.</li></ul></div>` }
-    ];
+    <span class="kw">def</span> <span class="fn">display</span>(<span class="kw">self</span>):
+        <span class="fn">print</span>(<span class="st">f"Name: {self.name}, Roll: {self.roll}, Marks: {self.marks}"</span>)
 
-    // rendering + filtering logic
-    function renderSlips(filterText = "", tag = "all") {
-        const container = document.getElementById('slipsContainer');
-        let filtered = slipsData.filter(slip => {
-            const matchTag = (tag === "all") || slip.tags.includes(tag);
-            const matchText = slip.title.toLowerCase().includes(filterText) || slip.content.toLowerCase().includes(filterText);
-            return matchTag && matchText;
-        });
-        if (filtered.length === 0) {
-            container.innerHTML = `<div class="no-result">✨ No matching slips found. Try another keyword or tag.</div>`;
-            return;
-        }
-        container.innerHTML = filtered.map(slip => `
-            <div class="slip-card" data-id="${slip.id}">
-                <div class="card-header">
-                    <div style="display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;">
-                        <span class="slip-number">#${slip.id}</span>
-                        <span class="slip-title-main">${escapeHtml(slip.title)}</span>
-                        <span class="badge-pill">${slip.tags.join(", ")}</span>
-                    </div>
-                    <span class="chevron">▼</span>
-                </div>
-                <div class="card-body">
-                    ${slip.content}
-                </div>
-            </div>
-        `).join('');
-        attachCopyEvents();
-        attachToggleEvents();
+s1 = <span class="fn">Student</span>(<span class="st">"Alice"</span>, <span class="num">101</span>, <span class="num">88</span>)
+s1.<span class="fn">display</span>()`}
+  ]
+},{
+  n:2,
+  tasks:[
+    {q:"Explain types of Inheritance with examples",marks:15,type:"theory",content:`<h4>Types of Inheritance</h4><ul>
+<li><b>Single:</b> One child inherits from one parent. <code>class B(A)</code></li>
+<li><b>Multiple:</b> One child inherits from multiple parents. <code>class C(A, B)</code></li>
+<li><b>Multilevel:</b> Chain – A → B → C. <code>class C(B)</code> where B inherits A.</li>
+<li><b>Hierarchical:</b> Multiple children inherit from one parent. <code>class B(A), class C(A)</code></li>
+<li><b>Hybrid:</b> Combination of two or more types.</li>
+</ul>`},
+    {q:"Print diamond pattern using loop",marks:20,type:"code",content:`n = <span class="num">3</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, n+<span class="num">1</span>, <span class="num">2</span>):
+    <span class="fn">print</span>(<span class="st">" "</span> * (n - i) + <span class="st">"*"</span> * i)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(n-<span class="num">2</span>, <span class="num">0</span>, -<span class="num">2</span>):
+    <span class="fn">print</span>(<span class="st">" "</span> * (n - i) + <span class="st">"*"</span> * i)
+
+<span class="cm"># Output:
+#  *
+# ***
+#*****
+# ***
+#  *</span>`}
+  ]
+},{
+  n:3,
+  tasks:[
+    {q:"Explain loop control statements: continue, break, pass",marks:15,type:"theory",content:`<h4>Loop Control Statements</h4><ul>
+<li><b>break:</b> Exits the loop immediately.<br><code>for i in range(5): if i==3: break</code> → stops at 3</li>
+<li><b>continue:</b> Skips current iteration and goes to next.<br><code>for i in range(5): if i==3: continue</code> → skips 3</li>
+<li><b>pass:</b> Does nothing; used as a placeholder.<br><code>for i in range(5): pass</code> → runs but no output</li>
+</ul>`},
+    {q:"Class Calculator with all arithmetic operations",marks:20,type:"code",content:`<span class="kw">class</span> <span class="fn">Calculator</span>:
+    <span class="kw">def</span> <span class="fn">add</span>(<span class="kw">self</span>, a, b): <span class="kw">return</span> a + b
+    <span class="kw">def</span> <span class="fn">sub</span>(<span class="kw">self</span>, a, b): <span class="kw">return</span> a - b
+    <span class="kw">def</span> <span class="fn">mul</span>(<span class="kw">self</span>, a, b): <span class="kw">return</span> a * b
+    <span class="kw">def</span> <span class="fn">div</span>(<span class="kw">self</span>, a, b):
+        <span class="kw">if</span> b == <span class="num">0</span>: <span class="kw">return</span> <span class="st">"Cannot divide by zero"</span>
+        <span class="kw">return</span> a / b
+    <span class="kw">def</span> <span class="fn">mod</span>(<span class="kw">self</span>, a, b): <span class="kw">return</span> a % b
+
+c = <span class="fn">Calculator</span>()
+<span class="fn">print</span>(c.<span class="fn">add</span>(<span class="num">10</span>, <span class="num">5</span>))   <span class="cm"># 15</span>
+<span class="fn">print</span>(c.<span class="fn">sub</span>(<span class="num">10</span>, <span class="num">5</span>))   <span class="cm"># 5</span>
+<span class="fn">print</span>(c.<span class="fn">mul</span>(<span class="num">10</span>, <span class="num">5</span>))   <span class="cm"># 50</span>
+<span class="fn">print</span>(c.<span class="fn">div</span>(<span class="num">10</span>, <span class="num">5</span>))   <span class="cm"># 2.0</span>
+<span class="fn">print</span>(c.<span class="fn">mod</span>(<span class="num">10</span>, <span class="num">3</span>))   <span class="cm"># 1</span>`}
+  ]
+},{
+  n:4,
+  tasks:[
+    {q:"List types of operators and describe Bitwise operators",marks:15,type:"theory",content:`<h4>Types of Operators</h4>
+<p>Arithmetic, Assignment, Comparison, Logical, Bitwise, Membership, Identity</p>
+<h4 style="margin-top:8px">Bitwise Operators (work on binary bits)</h4>
+<table><tr><th>Op</th><th>Name</th><th>Example (a=5, b=3)</th><th>Result</th></tr>
+<tr><td>&amp;</td><td>AND</td><td>5 &amp; 3 → 101 &amp; 011</td><td>1 (001)</td></tr>
+<tr><td>|</td><td>OR</td><td>5 | 3 → 101 | 011</td><td>7 (111)</td></tr>
+<tr><td>^</td><td>XOR</td><td>5 ^ 3</td><td>6 (110)</td></tr>
+<tr><td>~</td><td>NOT</td><td>~5</td><td>-6</td></tr>
+<tr><td>&lt;&lt;</td><td>Left Shift</td><td>5 &lt;&lt; 1</td><td>10</td></tr>
+<tr><td>&gt;&gt;</td><td>Right Shift</td><td>5 &gt;&gt; 1</td><td>2</td></tr>
+</table>`},
+    {q:"GUI Tkinter Registration form",marks:20,type:"code",content:`<span class="kw">import</span> tkinter <span class="kw">as</span> tk
+
+root = tk.<span class="fn">Tk</span>()
+root.<span class="fn">title</span>(<span class="st">"Registration Form"</span>)
+root.<span class="fn">geometry</span>(<span class="st">"300x250"</span>)
+
+tk.<span class="fn">Label</span>(root, text=<span class="st">"Name:"</span>).<span class="fn">grid</span>(row=<span class="num">0</span>, column=<span class="num">0</span>, padx=<span class="num">10</span>, pady=<span class="num">10</span>)
+tk.<span class="fn">Entry</span>(root).<span class="fn">grid</span>(row=<span class="num">0</span>, column=<span class="num">1</span>)
+
+tk.<span class="fn">Label</span>(root, text=<span class="st">"Email:"</span>).<span class="fn">grid</span>(row=<span class="num">1</span>, column=<span class="num">0</span>, padx=<span class="num">10</span>, pady=<span class="num">10</span>)
+tk.<span class="fn">Entry</span>(root).<span class="fn">grid</span>(row=<span class="num">1</span>, column=<span class="num">1</span>)
+
+tk.<span class="fn">Label</span>(root, text=<span class="st">"Phone:"</span>).<span class="fn">grid</span>(row=<span class="num">2</span>, column=<span class="num">0</span>, padx=<span class="num">10</span>, pady=<span class="num">10</span>)
+tk.<span class="fn">Entry</span>(root).<span class="fn">grid</span>(row=<span class="num">2</span>, column=<span class="num">1</span>)
+
+tk.<span class="fn">Button</span>(root, text=<span class="st">"Register"</span>, bg=<span class="st">"blue"</span>, fg=<span class="st">"white"</span>).<span class="fn">grid</span>(row=<span class="num">3</span>, columnspan=<span class="num">2</span>, pady=<span class="num">15</span>)
+
+root.<span class="fn">mainloop</span>()`}
+  ]
+},{
+  n:5,
+  tasks:[
+    {q:"Explain types of range() function with example",marks:15,type:"theory",content:`<h4>range() Function</h4><ul>
+<li><b>range(stop):</b> <code>range(5)</code> → 0,1,2,3,4</li>
+<li><b>range(start, stop):</b> <code>range(2, 6)</code> → 2,3,4,5</li>
+<li><b>range(start, stop, step):</b> <code>range(0, 10, 2)</code> → 0,2,4,6,8</li>
+<li><b>Negative step:</b> <code>range(10, 0, -2)</code> → 10,8,6,4,2</li>
+</ul>`},
+    {q:"Swap two variables and display before/after",marks:20,type:"code",content:`a = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a: "</span>))
+b = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter b: "</span>))
+
+<span class="fn">print</span>(<span class="st">f"Before swap: a={a}, b={b}"</span>)
+a, b = b, a
+<span class="fn">print</span>(<span class="st">f"After swap:  a={a}, b={b}"</span>)`}
+  ]
+},{
+  n:6,
+  tasks:[
+    {q:"Difference between Set and Dictionary",marks:15,type:"theory",content:`<table>
+<tr><th>Set</th><th>Dictionary</th></tr>
+<tr><td>Unordered collection of unique values</td><td>Key-value pairs</td></tr>
+<tr><td>Defined with <code>{ }</code> or <code>set()</code></td><td>Defined with <code>{ key: val }</code></td></tr>
+<tr><td>No duplicates allowed</td><td>Keys must be unique</td></tr>
+<tr><td>Not indexable</td><td>Accessed by key</td></tr>
+<tr><td>Supports set operations (union, etc.)</td><td>Supports key-based lookup</td></tr>
+</table>`},
+    {q:"Create a DataFrame with Name, Class, Age using dictionary",marks:20,type:"code",content:`<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+data = {
+    <span class="st">"Name"</span>:  [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Charlie"</span>],
+    <span class="st">"Class"</span>: [<span class="st">"FY"</span>, <span class="st">"SY"</span>, <span class="st">"TY"</span>],
+    <span class="st">"Age"</span>:   [<span class="num">17</span>, <span class="num">18</span>, <span class="num">19</span>]
+}
+
+df = pd.<span class="fn">DataFrame</span>(data)
+<span class="fn">print</span>(df)`}
+  ]
+},{
+  n:7,
+  tasks:[
+    {q:"Characteristics of a Dictionary",marks:15,type:"theory",content:`<h4>Dictionary Characteristics</h4><ul>
+<li><b>Key-Value pairs:</b> Each element is stored as key: value.</li>
+<li><b>Mutable:</b> Can add, update, delete entries.</li>
+<li><b>Keys unique:</b> Duplicate keys are not allowed.</li>
+<li><b>Keys immutable:</b> Keys must be of immutable type (str, int, tuple).</li>
+<li><b>Ordered:</b> Maintains insertion order (Python 3.7+).</li>
+<li><b>Heterogeneous:</b> Keys and values can be of any type.</li>
+</ul>`},
+    {q:"Convert bits to MB, GB, TB",marks:20,type:"code",content:`bits = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter bits: "</span>))
+
+mb = bits / (<span class="num">8</span> * <span class="num">1024</span> * <span class="num">1024</span>)
+gb = bits / (<span class="num">8</span> * <span class="num">1024</span> ** <span class="num">3</span>)
+tb = bits / (<span class="num">8</span> * <span class="num">1024</span> ** <span class="num">4</span>)
+
+<span class="fn">print</span>(<span class="st">f"{bits} bits = {mb:.6f} MB"</span>)
+<span class="fn">print</span>(<span class="st">f"{bits} bits = {gb:.9f} GB"</span>)
+<span class="fn">print</span>(<span class="st">f"{bits} bits = {tb:.12f} TB"</span>)`}
+  ]
+},{
+  n:8,
+  tasks:[
+    {q:"Syntax to define a function; function to find sum",marks:15,type:"theory",content:`<h4>Function Syntax</h4>
+<pre style="margin:0;padding:8px;border-radius:4px;background:#1e1e2e;color:#cdd6f4;font-size:13px"><span class="kw">def</span> <span class="fn">function_name</span>(parameters):
+    <span class="cm">"""docstring"""</span>
+    <span class="cm"># body</span>
+    <span class="kw">return</span> value</pre>
+<div style="margin-top:8px"><b>Example – Sum function:</b></div>
+<pre style="margin:4px 0 0;padding:8px;border-radius:4px;background:#1e1e2e;color:#cdd6f4;font-size:13px"><span class="kw">def</span> <span class="fn">find_sum</span>(a, b): <span class="kw">return</span> a + b
+<span class="fn">print</span>(<span class="fn">find_sum</span>(<span class="num">4</span>, <span class="num">6</span>))  <span class="cm"># 10</span></pre>`},
+    {q:"Class with area of square and rectangle (method overloading style)",marks:20,type:"code",content:`<span class="kw">class</span> <span class="fn">Shape</span>:
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="kw">self</span>, a, b=<span class="kw">None</span>):
+        <span class="kw">if</span> b <span class="kw">is None</span>:
+            <span class="fn">print</span>(<span class="st">f"Area of Square = {a*a}"</span>)
+        <span class="kw">else</span>:
+            <span class="fn">print</span>(<span class="st">f"Area of Rectangle = {a*b}"</span>)
+
+s = <span class="fn">Shape</span>()
+s.<span class="fn">area</span>(<span class="num">5</span>)        <span class="cm"># Square: 25</span>
+s.<span class="fn">area</span>(<span class="num">4</span>, <span class="num">6</span>)     <span class="cm"># Rectangle: 24</span>`}
+  ]
+},{
+  n:9,
+  tasks:[
+    {q:"Syntax of all conditional statements",marks:15,type:"theory",content:`<h4>Conditional Statements</h4><ul>
+<li><b>if:</b> <code>if condition: block</code></li>
+<li><b>if-else:</b> <code>if condition: block else: block</code></li>
+<li><b>if-elif-else:</b> Multiple conditions checked in order.</li>
+<li><b>Nested if:</b> if inside another if.</li>
+<li><b>Ternary:</b> <code>x = a if condition else b</code></li>
+</ul>`},
+    {q:"Tkinter CheckButton for 5 options",marks:20,type:"code",content:`<span class="kw">import</span> tkinter <span class="kw">as</span> tk
+
+root = tk.<span class="fn">Tk</span>()
+root.<span class="fn">title</span>(<span class="st">"CheckButtons"</span>)
+
+options = [<span class="st">"Python"</span>, <span class="st">"Java"</span>, <span class="st">"C++"</span>, <span class="st">"HTML"</span>, <span class="st">"SQL"</span>]
+vars_ = []
+
+<span class="kw">for</span> opt <span class="kw">in</span> options:
+    v = tk.<span class="fn">IntVar</span>()
+    tk.<span class="fn">Checkbutton</span>(root, text=opt, variable=v).<span class="fn">pack</span>(anchor=<span class="st">"w"</span>, padx=<span class="num">20</span>)
+    vars_.<span class="fn">append</span>(v)
+
+<span class="kw">def</span> <span class="fn">show</span>():
+    selected = [options[i] <span class="kw">for</span> i, v <span class="kw">in</span> <span class="fn">enumerate</span>(vars_) <span class="kw">if</span> v.<span class="fn">get</span>()]
+    <span class="fn">print</span>(<span class="st">"Selected:"</span>, selected)
+
+tk.<span class="fn">Button</span>(root, text=<span class="st">"Submit"</span>, command=show).<span class="fn">pack</span>(pady=<span class="num">10</span>)
+root.<span class="fn">mainloop</span>()`}
+  ]
+},{
+  n:10,
+  tasks:[
+    {q:"Difference between List and Tuple",marks:15,type:"theory",content:`<table>
+<tr><th>List</th><th>Tuple</th></tr>
+<tr><td>Mutable (can change)</td><td>Immutable (cannot change)</td></tr>
+<tr><td>Defined with <code>[ ]</code></td><td>Defined with <code>( )</code></td></tr>
+<tr><td>Slower (due to mutability)</td><td>Faster to iterate</td></tr>
+<tr><td>More memory</td><td>Less memory</td></tr>
+<tr><td>Used for changeable data</td><td>Used for fixed/constant data</td></tr>
+</table>`},
+    {q:"Implement multiple inheritance",marks:20,type:"code",content:`<span class="kw">class</span> <span class="fn">Father</span>:
+    <span class="kw">def</span> <span class="fn">skill</span>(<span class="kw">self</span>): <span class="fn">print</span>(<span class="st">"Father: Driving"</span>)
+
+<span class="kw">class</span> <span class="fn">Mother</span>:
+    <span class="kw">def</span> <span class="fn">skill</span>(<span class="kw">self</span>): <span class="fn">print</span>(<span class="st">"Mother: Cooking"</span>)
+
+<span class="kw">class</span> <span class="fn">Child</span>(<span class="fn">Father</span>, <span class="fn">Mother</span>):
+    <span class="kw">def</span> <span class="fn">own_skill</span>(<span class="kw">self</span>): <span class="fn">print</span>(<span class="st">"Child: Coding"</span>)
+
+c = <span class="fn">Child</span>()
+c.<span class="fn">skill</span>()       <span class="cm"># From Father (MRO)</span>
+c.<span class="fn">own_skill</span>()`}
+  ]
+},{
+  n:11,
+  tasks:[
+    {q:"Dictionary keys(), values(), items() functions",marks:15,type:"theory",content:`<h4>Dictionary Functions</h4><ul>
+<li><b>keys():</b> Returns all keys. <code>d.keys()</code> → dict_keys([...])</li>
+<li><b>values():</b> Returns all values. <code>d.values()</code> → dict_values([...])</li>
+<li><b>items():</b> Returns key-value pairs as tuples. <code>d.items()</code> → dict_items([(...)])</li>
+</ul>
+<b>Example:</b> <code>d = {"a":1,"b":2}; d.keys() → dict_keys(['a','b'])</code>`},
+    {q:"Check if input year is a leap year",marks:20,type:"code",content:`year = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter year: "</span>))
+
+<span class="kw">if</span> (year % <span class="num">4</span> == <span class="num">0</span> <span class="kw">and</span> year % <span class="num">100</span> != <span class="num">0</span>) <span class="kw">or</span> (year % <span class="num">400</span> == <span class="num">0</span>):
+    <span class="fn">print</span>(year, <span class="st">"is a Leap Year"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(year, <span class="st">"is NOT a Leap Year"</span>)`}
+  ]
+},{
+  n:12,
+  tasks:[
+    {q:"Key features of Python",marks:15,type:"theory",content:`<h4>Key Features of Python</h4><ul>
+<li><b>Simple syntax:</b> Easy to read and write, close to English.</li>
+<li><b>Interpreted:</b> Executed line by line; no compilation needed.</li>
+<li><b>Dynamically typed:</b> No need to declare variable types.</li>
+<li><b>Object-Oriented:</b> Supports classes, inheritance, polymorphism.</li>
+<li><b>Extensive libraries:</b> NumPy, Pandas, Django, TensorFlow etc.</li>
+<li><b>Cross-platform:</b> Runs on Windows, Linux, macOS.</li>
+<li><b>Open source &amp; Free:</b> Freely available and community-driven.</li>
+</ul>`},
+    {q:"Tkinter RadioButton for 5 options",marks:20,type:"code",content:`<span class="kw">import</span> tkinter <span class="kw">as</span> tk
+
+root = tk.<span class="fn">Tk</span>()
+root.<span class="fn">title</span>(<span class="st">"RadioButtons"</span>)
+
+v = tk.<span class="fn">StringVar</span>(value=<span class="st">"Python"</span>)
+options = [<span class="st">"Python"</span>, <span class="st">"Java"</span>, <span class="st">"C++"</span>, <span class="st">"HTML"</span>, <span class="st">"SQL"</span>]
+
+<span class="kw">for</span> opt <span class="kw">in</span> options:
+    tk.<span class="fn">Radiobutton</span>(root, text=opt, variable=v, value=opt).<span class="fn">pack</span>(anchor=<span class="st">"w"</span>, padx=<span class="num">20</span>)
+
+<span class="kw">def</span> <span class="fn">show</span>(): <span class="fn">print</span>(<span class="st">"Selected:"</span>, v.<span class="fn">get</span>())
+
+tk.<span class="fn">Button</span>(root, text=<span class="st">"Submit"</span>, command=show).<span class="fn">pack</span>(pady=<span class="num">10</span>)
+root.<span class="fn">mainloop</span>()`}
+  ]
+},{
+  n:13,
+  tasks:[
+    {q:"Define Set and write characteristics",marks:15,type:"theory",content:`<h4>Set</h4>
+<p>A set is an unordered collection of <b>unique</b> and <b>immutable</b> elements.</p>
+<h4>Characteristics</h4><ul>
+<li>Unordered – no fixed position/index.</li>
+<li>No duplicates – each element appears once.</li>
+<li>Mutable – can add/remove elements.</li>
+<li>Elements must be hashable (immutable types).</li>
+<li>Supports mathematical set operations.</li>
+</ul>`},
+    {q:"Take marks of 5 subjects and display grade",marks:20,type:"code",content:`marks = []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">5</span>):
+    m = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">f"Marks for subject {i+1}: "</span>))
+    marks.<span class="fn">append</span>(m)
+
+avg = <span class="fn">sum</span>(marks) / <span class="fn">len</span>(marks)
+<span class="fn">print</span>(<span class="st">f"Average: {avg:.2f}"</span>)
+
+<span class="kw">if</span>   avg >= <span class="num">90</span>: <span class="fn">print</span>(<span class="st">"Grade: O"</span>)
+<span class="kw">elif</span> avg >= <span class="num">75</span>: <span class="fn">print</span>(<span class="st">"Grade: A+"</span>)
+<span class="kw">elif</span> avg >= <span class="num">60</span>: <span class="fn">print</span>(<span class="st">"Grade: A"</span>)
+<span class="kw">elif</span> avg >= <span class="num">50</span>: <span class="fn">print</span>(<span class="st">"Grade: B"</span>)
+<span class="kw">elif</span> avg >= <span class="num">40</span>: <span class="fn">print</span>(<span class="st">"Grade: C"</span>)
+<span class="kw">else</span>:           <span class="fn">print</span>(<span class="st">"Grade: F (Fail)"</span>)`}
+  ]
+},{
+  n:14,
+  tasks:[
+    {q:"Membership operators with example",marks:15,type:"theory",content:`<h4>Membership Operators</h4>
+<p>Used to test if a value is present in a sequence (list, tuple, string, set, dict).</p>
+<table>
+<tr><th>Operator</th><th>Description</th><th>Example</th><th>Result</th></tr>
+<tr><td>in</td><td>Returns True if present</td><td><code>3 in [1,2,3]</code></td><td>True</td></tr>
+<tr><td>not in</td><td>Returns True if not present</td><td><code>5 not in [1,2,3]</code></td><td>True</td></tr>
+</table>`},
+    {q:"Implement multilevel inheritance",marks:20,type:"code",content:`<span class="kw">class</span> <span class="fn">Animal</span>:
+    <span class="kw">def</span> <span class="fn">breathe</span>(<span class="kw">self</span>): <span class="fn">print</span>(<span class="st">"Animal: Breathes"</span>)
+
+<span class="kw">class</span> <span class="fn">Mammal</span>(<span class="fn">Animal</span>):
+    <span class="kw">def</span> <span class="fn">feed</span>(<span class="kw">self</span>): <span class="fn">print</span>(<span class="st">"Mammal: Feeds young"</span>)
+
+<span class="kw">class</span> <span class="fn">Dog</span>(<span class="fn">Mammal</span>):
+    <span class="kw">def</span> <span class="fn">bark</span>(<span class="kw">self</span>): <span class="fn">print</span>(<span class="st">"Dog: Barks"</span>)
+
+d = <span class="fn">Dog</span>()
+d.<span class="fn">breathe</span>()   <span class="cm"># from Animal</span>
+d.<span class="fn">feed</span>()      <span class="cm"># from Mammal</span>
+d.<span class="fn">bark</span>()      <span class="cm"># own method</span>`}
+  ]
+},{
+  n:15,
+  tasks:[
+    {q:"Operators used in if conditional statements",marks:15,type:"theory",content:`<h4>Operators in if Conditions</h4><ul>
+<li><b>Comparison:</b> ==, !=, &lt;, &gt;, &lt;=, &gt;= → compare values</li>
+<li><b>Logical:</b> and, or, not → combine conditions</li>
+<li><b>Membership:</b> in, not in → check presence</li>
+<li><b>Identity:</b> is, is not → check same object</li>
+</ul>
+<b>Example:</b> <code>if age >= 18 and status == "active": print("Eligible")</code>`},
+    {q:"Find sum of digits of a four-digit number",marks:20,type:"code",content:`n = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a 4-digit number: "</span>))
+
+s = <span class="num">0</span>
+temp = n
+<span class="kw">while</span> temp > <span class="num">0</span>:
+    s += temp % <span class="num">10</span>
+    temp //= <span class="num">10</span>
+
+<span class="fn">print</span>(<span class="st">f"Sum of digits of {n} = {s}"</span>)`}
+  ]
+},{
+  n:16,
+  tasks:[
+    {q:"Syntax of while/for loop; convert while to for",marks:15,type:"theory",content:`<h4>While loop syntax:</h4>
+<pre style="margin:0;padding:8px;background:#1e1e2e;color:#cdd6f4;border-radius:4px;font-size:13px"><span class="kw">while</span> condition:
+    body</pre>
+<h4 style="margin-top:8px">For loop syntax:</h4>
+<pre style="margin:0;padding:8px;background:#1e1e2e;color:#cdd6f4;border-radius:4px;font-size:13px"><span class="kw">for</span> var <span class="kw">in</span> sequence:
+    body</pre>
+<h4 style="margin-top:8px">Conversion:</h4>
+<pre style="margin:0;padding:8px;background:#1e1e2e;color:#cdd6f4;border-radius:4px;font-size:13px"><span class="cm"># while version</span>
+x=<span class="num">1</span>
+<span class="kw">while</span> x&lt;<span class="num">10</span>: <span class="fn">print</span>(x, end=<span class="st">" "</span>); x+=<span class="num">1</span>
+<span class="cm"># for version</span>
+<span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>,<span class="num">10</span>): <span class="fn">print</span>(x, end=<span class="st">" "</span>)</pre>`},
+    {q:"Set operations: intersection, union, difference, symmetric difference",marks:20,type:"code",content:`a = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>}
+b = {<span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>, <span class="num">7</span>}
+
+<span class="fn">print</span>(<span class="st">"Union:"</span>,                a | b)
+<span class="fn">print</span>(<span class="st">"Intersection:"</span>,         a &amp; b)
+<span class="fn">print</span>(<span class="st">"Difference (a-b):"</span>,     a - b)
+<span class="fn">print</span>(<span class="st">"Symmetric Difference:"</span>, a ^ b)`}
+  ]
+},{
+  n:17,
+  tasks:[
+    {q:"Describe various list functions",marks:15,type:"theory",content:`<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td>append(x)</td><td>Adds x at end</td></tr>
+<tr><td>insert(i,x)</td><td>Inserts x at index i</td></tr>
+<tr><td>remove(x)</td><td>Removes first occurrence of x</td></tr>
+<tr><td>pop(i)</td><td>Removes & returns item at i</td></tr>
+<tr><td>sort()</td><td>Sorts list in place</td></tr>
+<tr><td>reverse()</td><td>Reverses list in place</td></tr>
+<tr><td>index(x)</td><td>Returns index of first x</td></tr>
+<tr><td>count(x)</td><td>Counts occurrences of x</td></tr>
+<tr><td>extend(lst)</td><td>Appends all items from lst</td></tr>
+<tr><td>clear()</td><td>Removes all elements</td></tr>
+</table>`},
+    {q:"Print number pattern: 1010101 / 10101 / 101 / 1",marks:20,type:"code",content:`rows = <span class="num">4</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(rows, <span class="num">0</span>, -<span class="num">1</span>):
+    pattern = <span class="st">""</span>
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="fn">range</span>(i):
+        pattern += <span class="st">"1"</span> <span class="kw">if</span> j % <span class="num">2</span> == <span class="num">0</span> <span class="kw">else</span> <span class="st">"0"</span>
+    <span class="fn">print</span>(<span class="st">" "</span> * (rows - i) + pattern)
+
+<span class="cm"># Output:
+# 1010101
+#  10101
+#   101
+#    1</span>`}
+  ]
+},{
+  n:18,
+  tasks:[
+    {q:"Identity operators with example",marks:15,type:"theory",content:`<h4>Identity Operators</h4>
+<p>Used to check if two variables point to the <b>same object</b> in memory.</p>
+<table>
+<tr><th>Operator</th><th>Description</th><th>Example</th></tr>
+<tr><td>is</td><td>True if same object</td><td><code>a is b</code></td></tr>
+<tr><td>is not</td><td>True if not same object</td><td><code>a is not b</code></td></tr>
+</table>
+<b>Note:</b> <code>==</code> compares values; <code>is</code> compares identity (memory address).`},
+    {q:"Create Series from array and list using Pandas",marks:20,type:"code",content:`<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+arr = np.<span class="fn">array</span>([<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>])
+s1 = pd.<span class="fn">Series</span>(arr)
+<span class="fn">print</span>(<span class="st">"Series from array:"</span>)
+<span class="fn">print</span>(s1)
+
+lst = [<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>]
+s2 = pd.<span class="fn">Series</span>(lst)
+<span class="fn">print</span>(<span class="st">"\nSeries from list:"</span>)
+<span class="fn">print</span>(s2)`}
+  ]
+},{
+  n:19,
+  tasks:[
+    {q:"Difference between insert() and extend() in list",marks:15,type:"theory",content:`<h4>insert() vs extend()</h4>
+<table>
+<tr><th>insert()</th><th>extend()</th></tr>
+<tr><td>Inserts a single element at a given index</td><td>Appends all elements of another iterable to the end</td></tr>
+<tr><td><code>lst.insert(i, x)</code></td><td><code>lst.extend([x1, x2])</code></td></tr>
+<tr><td><code>[1,2,3].insert(1,9)</code> → [1,9,2,3]</td><td><code>[1,2].extend([3,4])</code> → [1,2,3,4]</td></tr>
+</table>`},
+    {q:"Check if number is Positive, Negative or Zero",marks:20,type:"code",content:`n = <span class="fn">float</span>(<span class="fn">input</span>(<span class="st">"Enter a number: "</span>))
+
+<span class="kw">if</span>   n > <span class="num">0</span>: <span class="fn">print</span>(<span class="st">"Positive"</span>)
+<span class="kw">elif</span> n < <span class="num">0</span>: <span class="fn">print</span>(<span class="st">"Negative"</span>)
+<span class="kw">else</span>:        <span class="fn">print</span>(<span class="st">"Zero"</span>)`}
+  ]
+},{
+  n:20,
+  tasks:[
+    {q:"Explain slicing in a list with example",marks:15,type:"theory",content:`<h4>List Slicing</h4>
+<p>Syntax: <code>list[start:stop:step]</code></p><ul>
+<li><code>lst[1:4]</code> → elements at index 1,2,3</li>
+<li><code>lst[:3]</code> → first 3 elements</li>
+<li><code>lst[2:]</code> → from index 2 to end</li>
+<li><code>lst[::2]</code> → every 2nd element</li>
+<li><code>lst[::-1]</code> → reversed list</li>
+</ul>
+<b>Example:</b> <code>lst=[10,20,30,40,50]; lst[1:4]</code> → [20,30,40]`},
+    {q:"5 list update and delete operations",marks:20,type:"code",content:`lst = [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>]
+
+<span class="cm"># 1. Update by index</span>
+lst[<span class="num">0</span>] = <span class="num">100</span>;           <span class="fn">print</span>(lst)   <span class="cm"># [100,20,30,40,50]</span>
+
+<span class="cm"># 2. append()</span>
+lst.<span class="fn">append</span>(<span class="num">60</span>);          <span class="fn">print</span>(lst)   <span class="cm"># [100,20,30,40,50,60]</span>
+
+<span class="cm"># 3. insert()</span>
+lst.<span class="fn">insert</span>(<span class="num">2</span>, <span class="num">999</span>);       <span class="fn">print</span>(lst)   <span class="cm"># [...,999,...]</span>
+
+<span class="cm"># 4. remove()</span>
+lst.<span class="fn">remove</span>(<span class="num">999</span>);          <span class="fn">print</span>(lst)
+
+<span class="cm"># 5. pop()</span>
+lst.<span class="fn">pop</span>(<span class="num">0</span>);               <span class="fn">print</span>(lst)   <span class="cm"># removes index 0</span>
+
+<span class="cm"># 6. del</span>
+<span class="kw">del</span> lst[<span class="num">-1</span>];             <span class="fn">print</span>(lst)   <span class="cm"># removes last</span>`}
+  ]
+},{
+  n:21,
+  tasks:[
+    {q:"Difference between Series and DataFrame",marks:15,type:"theory",content:`<table>
+<tr><th>Series</th><th>DataFrame</th></tr>
+<tr><td>1D labelled array</td><td>2D labelled table</td></tr>
+<tr><td>Single column of data</td><td>Multiple columns</td></tr>
+<tr><td><code>pd.Series([1,2,3])</code></td><td><code>pd.DataFrame({...})</code></td></tr>
+<tr><td>Has index only</td><td>Has row index + column labels</td></tr>
+<tr><td>Like a single column of spreadsheet</td><td>Like a full spreadsheet</td></tr>
+</table>`},
+    {q:"Find common items from two lists",marks:20,type:"code",content:`list1 = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>]
+list2 = [<span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>, <span class="num">7</span>]
+
+common = [x <span class="kw">for</span> x <span class="kw">in</span> list1 <span class="kw">if</span> x <span class="kw">in</span> list2]
+<span class="fn">print</span>(<span class="st">"Common items:"</span>, common)
+
+<span class="cm"># Alternatively using sets:</span>
+common2 = <span class="fn">list</span>(<span class="fn">set</span>(list1) &amp; <span class="fn">set</span>(list2))
+<span class="fn">print</span>(<span class="st">"Using sets:"</span>, common2)`}
+  ]
+},{
+  n:22,
+  tasks:[
+    {q:"Use of pip & pep; steps to install a package",marks:15,type:"theory",content:`<h4>pip</h4>
+<p>pip = Package Installer for Python. Used to install/manage Python packages from PyPI.</p>
+<h4>pep</h4>
+<p>pep = Python Enhancement Proposal. PEP 8 is the style guide for Python code.</p>
+<h4>Steps to install a package:</h4><ul>
+<li>Open terminal/command prompt</li>
+<li>Type: <code>pip install package_name</code></li>
+<li>Example: <code>pip install numpy</code></li>
+<li>Verify: <code>pip show numpy</code></li>
+</ul>`},
+    {q:"Dictionary: create 5 elements, add new, update values",marks:20,type:"code",content:`d = {<span class="st">"a"</span>:<span class="num">1</span>, <span class="st">"b"</span>:<span class="num">2</span>, <span class="st">"c"</span>:<span class="num">3</span>, <span class="st">"d"</span>:<span class="num">4</span>, <span class="st">"e"</span>:<span class="num">5</span>}
+<span class="fn">print</span>(<span class="st">"Original:"</span>, d)
+
+d[<span class="st">"f"</span>] = <span class="num">6</span>
+<span class="fn">print</span>(<span class="st">"After adding key 'f':"</span>, d)
+
+d[<span class="st">"a"</span>] = <span class="num">100</span>
+<span class="fn">print</span>(<span class="st">"After updating 'a':"</span>, d)
+
+d.<span class="fn">update</span>({<span class="st">"b"</span>: <span class="num">200</span>, <span class="st">"c"</span>: <span class="num">300</span>})
+<span class="fn">print</span>(<span class="st">"After bulk update:"</span>, d)`}
+  ]
+},{
+  n:23,
+  tasks:[
+    {q:"4 functions of Random module with examples",marks:15,type:"theory",content:`<h4>Random Module Functions</h4><ul>
+<li><b>random():</b> Returns float between 0.0 and 1.0. <code>random.random()</code> → 0.574</li>
+<li><b>randint(a,b):</b> Returns random integer between a and b (inclusive). <code>random.randint(1,10)</code> → 7</li>
+<li><b>choice(seq):</b> Returns random element from sequence. <code>random.choice([1,2,3])</code> → 2</li>
+<li><b>shuffle(lst):</b> Shuffles a list in place. <code>random.shuffle(lst)</code></li>
+</ul>`},
+    {q:"Reverse a given number",marks:20,type:"code",content:`n = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a number: "</span>))
+
+rev = <span class="num">0</span>
+temp = <span class="fn">abs</span>(n)
+<span class="kw">while</span> temp > <span class="num">0</span>:
+    rev = rev * <span class="num">10</span> + temp % <span class="num">10</span>
+    temp //= <span class="num">10</span>
+
+<span class="kw">if</span> n < <span class="num">0</span>: rev = -rev
+<span class="fn">print</span>(<span class="st">f"Reversed number: {rev}"</span>)`}
+  ]
+},{
+  n:24,
+  tasks:[
+    {q:"Types of function arguments with examples",marks:15,type:"theory",content:`<h4>Function Arguments</h4><ul>
+<li><b>Positional:</b> Passed in order. <code>def f(a, b): f(1, 2)</code></li>
+<li><b>Keyword:</b> Passed by name. <code>f(b=2, a=1)</code></li>
+<li><b>Default:</b> Has default value. <code>def f(a, b=10):</code></li>
+<li><b>Variable-length (*args):</b> Accepts multiple positional args as tuple. <code>def f(*args):</code></li>
+<li><b>Keyword variable-length (**kwargs):</b> Accepts key-value pairs as dict. <code>def f(**kwargs):</code></li>
+</ul>`},
+    {q:"Tuple of 10 elements; find min and max",marks:20,type:"code",content:`t = (<span class="num">15</span>, <span class="num">3</span>, <span class="num">42</span>, <span class="num">8</span>, <span class="num">99</span>, <span class="num">1</span>, <span class="num">27</span>, <span class="num">56</span>, <span class="num">13</span>, <span class="num">74</span>)
+
+<span class="fn">print</span>(<span class="st">"Tuple:"</span>, t)
+<span class="fn">print</span>(<span class="st">"Minimum:"</span>, <span class="fn">min</span>(t))
+<span class="fn">print</span>(<span class="st">"Maximum:"</span>, <span class="fn">max</span>(t))`}
+  ]
+},{
+  n:25,
+  tasks:[
+    {q:"Characteristics of Tuple",marks:15,type:"theory",content:`<h4>Tuple Characteristics</h4><ul>
+<li><b>Ordered:</b> Maintains insertion order.</li>
+<li><b>Immutable:</b> Cannot be changed after creation.</li>
+<li><b>Indexed:</b> Accessed via index starting at 0.</li>
+<li><b>Allows duplicates.</b></li>
+<li><b>Heterogeneous:</b> Can hold different data types.</li>
+<li><b>Faster than lists</b> due to immutability.</li>
+<li>Defined with parentheses: <code>(1, 2, 3)</code></li>
+</ul>`},
+    {q:"Check if a number is palindrome",marks:20,type:"code",content:`n = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a number: "</span>))
+
+rev = <span class="fn">int</span>(<span class="fn">str</span>(n)[::-<span class="num">1</span>])
+
+<span class="kw">if</span> n == rev:
+    <span class="fn">print</span>(n, <span class="st">"is a Palindrome"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(n, <span class="st">"is NOT a Palindrome"</span>)`}
+  ]
+},{
+  n:26,
+  tasks:[
+    {q:"Purpose of 'self' parameter in constructor; create a constructor",marks:15,type:"theory",content:`<h4>self Parameter</h4>
+<p><code>self</code> refers to the <b>current instance</b> of the class. It allows each object to have its own copy of attributes and methods.</p>
+<ul>
+<li>Always the first parameter of instance methods.</li>
+<li>Not passed explicitly when calling; Python passes it automatically.</li>
+<li><code>self.attribute = value</code> stores data per object.</li>
+</ul>
+<b>Example:</b> <code>def __init__(self, name): self.name = name</code>`},
+    {q:"Find repeated items in a tuple",marks:20,type:"code",content:`t = (<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">2</span>, <span class="num">4</span>, <span class="num">3</span>, <span class="num">5</span>, <span class="num">1</span>)
+
+repeated = [x <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">set</span>(t) <span class="kw">if</span> t.<span class="fn">count</span>(x) > <span class="num">1</span>]
+<span class="fn">print</span>(<span class="st">"Repeated items:"</span>, repeated)
+
+<span class="cm"># With count info:</span>
+<span class="kw">for</span> x <span class="kw">in</span> <span class="fn">set</span>(t):
+    <span class="kw">if</span> t.<span class="fn">count</span>(x) > <span class="num">1</span>:
+        <span class="fn">print</span>(<span class="st">f"{x} appears {t.count(x)} times"</span>)`}
+  ]
+},{
+  n:27,
+  tasks:[
+    {q:"Method overloading vs method overriding",marks:15,type:"theory",content:`<table>
+<tr><th>Overloading</th><th>Overriding</th></tr>
+<tr><td>Same method name, different parameters</td><td>Redefine parent method in child class</td></tr>
+<tr><td>Python handles via default args / *args</td><td>Child class provides its own implementation</td></tr>
+<tr><td>Within same class</td><td>Across parent-child classes</td></tr>
+<tr><td><code>def area(self, a, b=None)</code></td><td><code>class Child: def speak(self): ...</code></td></tr>
+</table>`},
+    {q:"Define module for Fibonacci, import in another program",marks:20,type:"code",content:`<span class="cm"># --- file: fib_module.py ---</span>
+<span class="kw">def</span> <span class="fn">fibonacci</span>(n=<span class="num">10</span>):
+    a, b = <span class="num">0</span>, <span class="num">1</span>
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(n):
+        <span class="fn">print</span>(a, end=<span class="st">" "</span>)
+        a, b = b, a + b
+    <span class="fn">print</span>()
+
+<span class="cm"># --- file: main.py ---</span>
+<span class="kw">import</span> fib_module
+
+fib_module.<span class="fn">fibonacci</span>(<span class="num">10</span>)
+<span class="cm"># Output: 0 1 1 2 3 5 8 13 21 34</span>`}
+  ]
+},{
+  n:28,
+  tasks:[
+    {q:"Applications of Python",marks:15,type:"theory",content:`<h4>Applications of Python</h4><ul>
+<li><b>Web Development:</b> Django, Flask frameworks.</li>
+<li><b>Data Science &amp; Analytics:</b> NumPy, Pandas, Matplotlib.</li>
+<li><b>Machine Learning / AI:</b> TensorFlow, scikit-learn, PyTorch.</li>
+<li><b>Automation / Scripting:</b> File handling, web scraping (Selenium, BeautifulSoup).</li>
+<li><b>Desktop GUI:</b> Tkinter, PyQt.</li>
+<li><b>Game Development:</b> Pygame.</li>
+<li><b>Networking:</b> Socket programming.</li>
+<li><b>Embedded systems:</b> MicroPython for IoT.</li>
+</ul>`},
+    {q:"Create your own package with example and import it",marks:20,type:"code",content:`<span class="cm"># Folder structure:
+# mypackage/
+#   __init__.py
+#   mathops.py
+#   strops.py
+# main.py</span>
+
+<span class="cm"># --- mypackage/__init__.py ---</span>
+<span class="cm"># (empty or import statements)</span>
+
+<span class="cm"># --- mypackage/mathops.py ---</span>
+<span class="kw">def</span> <span class="fn">square</span>(x): <span class="kw">return</span> x * x
+<span class="kw">def</span> <span class="fn">cube</span>(x):   <span class="kw">return</span> x ** <span class="num">3</span>
+
+<span class="cm"># --- mypackage/strops.py ---</span>
+<span class="kw">def</span> <span class="fn">greet</span>(name): <span class="kw">return</span> <span class="st">f"Hello, {name}!"</span>
+
+<span class="cm"># --- main.py ---</span>
+<span class="kw">from</span> mypackage <span class="kw">import</span> mathops, strops
+
+<span class="fn">print</span>(mathops.<span class="fn">square</span>(<span class="num">5</span>))   <span class="cm"># 25</span>
+<span class="fn">print</span>(mathops.<span class="fn">cube</span>(<span class="num">3</span>))     <span class="cm"># 27</span>
+<span class="fn">print</span>(strops.<span class="fn">greet</span>(<span class="st">"Alice"</span>)) <span class="cm"># Hello, Alice!</span>`}
+  ]
+}
+];
+
+function buildSlip(slip) {
+  const div = document.createElement('div');
+  div.className = 'slip';
+  div.id = `slip-${slip.n}`;
+
+  div.innerHTML = `<div class="slip-header"><h2>Slip ${slip.n}</h2><span>50 Marks</span></div>`;
+
+  slip.tasks.forEach((task, idx) => {
+    const taskDiv = document.createElement('div');
+    taskDiv.className = 'task';
+
+    let content = '';
+    if (task.type === 'theory') {
+      content = `<div class="theory">${task.content}</div>`;
+    } else {
+      content = `<pre>${task.content}</pre>`;
     }
 
-    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;});}
+    taskDiv.innerHTML = `
+      <div class="task-label">
+        <span class="tname">Task ${idx+1}</span>
+        <span class="marks">${task.marks} Marks</span>
+      </div>
+      <div class="task-q">${task.q}</div>
+      ${content}`;
+    div.appendChild(taskDiv);
+  });
 
-    function attachCopyEvents() {
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            btn.removeEventListener('click', copyHandler);
-            btn.addEventListener('click', copyHandler);
-        });
-    }
-    function copyHandler(e) {
-        e.stopPropagation();
-        const pre = this.closest('pre');
-        if(pre) {
-            const codeElem = pre.querySelector('code');
-            let codeText = codeElem ? codeElem.innerText : pre.innerText.replace('📋 Copy', '').trim();
-            navigator.clipboard.writeText(codeText);
-            const original = this.innerText;
-            this.innerText = '✓ Copied!';
-            setTimeout(() => this.innerText = original, 1200);
-        }
-    }
-    function attachToggleEvents() {
-        document.querySelectorAll('.slip-card .card-header').forEach(header => {
-            header.removeEventListener('click', toggleHandler);
-            header.addEventListener('click', toggleHandler);
-        });
-    }
-    function toggleHandler(e) {
-        const card = this.closest('.slip-card');
-        if(card) card.classList.toggle('open');
-    }
+  const oral = document.createElement('div');
+  oral.className = 'oral';
+  oral.textContent = 'Task 3 – Oral (15 Marks): Be ready to explain your code and theory concepts verbally.';
+  div.appendChild(oral);
 
-    // filter & search
-    const searchInput = document.getElementById('searchInput');
-    const tagButtons = document.querySelectorAll('#tagFilter .tag');
-    let currentTag = "all";
-    tagButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            tagButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentTag = btn.getAttribute('data-tag');
-            renderSlips(searchInput.value.toLowerCase(), currentTag);
-        });
-    });
-    searchInput.addEventListener('input', (e) => {
-        renderSlips(e.target.value.toLowerCase(), currentTag);
-    });
-    renderSlips("", "all");
+  return div;
+}
+
+const container = document.getElementById('slipsContainer');
+const navLinks = document.getElementById('navLinks');
+
+slips.forEach(slip => {
+  container.appendChild(buildSlip(slip));
+  const a = document.createElement('a');
+  a.href = `#slip-${slip.n}`;
+  a.textContent = slip.n;
+  navLinks.appendChild(a);
+});
+
+document.getElementById('search').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  document.querySelectorAll('.slip').forEach(slip => {
+    slip.style.display = slip.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
 </script>
 </body>
 </html>
