@@ -48,7 +48,11 @@
   .theory th { background: #c8e6c9; padding: 5px 8px; text-align: left; }
   .theory td { padding: 4px 8px; border-bottom: 1px solid #a5d6a7; }
   
-  pre { background: var(--code-bg); color: var(--code-text); padding: 1rem; border-radius: 6px; font-size: 13px; line-height: 1.6; overflow-x: auto; font-family: 'Consolas', 'Courier New', monospace; }
+  .code-block { position: relative; }
+  .copy-btn { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.12); color: #cdd6f4; border: 1px solid rgba(255,255,255,0.2); border-radius: 5px; padding: 3px 10px; font-size: 12px; cursor: pointer; font-family: 'Segoe UI', sans-serif; transition: background 0.15s; }
+  .copy-btn:hover { background: rgba(255,255,255,0.25); }
+  .copy-btn.copied { background: #2e7d32; color: white; border-color: #2e7d32; }
+  pre { background: var(--code-bg); color: var(--code-text); padding: 1rem; padding-top: 2.2rem; border-radius: 6px; font-size: 13px; line-height: 1.6; overflow-x: auto; font-family: 'Consolas', 'Courier New', monospace; }
   .kw { color: #cba6f7; } .fn { color: #89b4fa; } .st { color: #a6e3a1; } .cm { color: #6c7086; font-style: italic; } .num { color: #fab387; }
   
   .oral { background: var(--surface2); padding: 0.75rem 1.25rem; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
@@ -754,7 +758,9 @@ function buildSlip(slip) {
     if (task.type === 'theory') {
       content = `<div class="theory">${task.content}</div>`;
     } else {
-      content = `<pre>${task.content}</pre>`;
+      const rawCode = task.content.replace(/<[^>]+>/g, '');
+      const escaped = rawCode.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#39;/g,"'").replace(/&quot;/g,'"');
+      content = `<div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre>${task.content}</pre></div>`;
     }
 
     taskDiv.innerHTML = `
@@ -785,6 +791,16 @@ slips.forEach(slip => {
   a.textContent = slip.n;
   navLinks.appendChild(a);
 });
+
+function copyCode(btn) {
+  const pre = btn.nextElementSibling;
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
 
 document.getElementById('search').addEventListener('input', function() {
   const q = this.value.toLowerCase();
